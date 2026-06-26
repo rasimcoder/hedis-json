@@ -6688,23 +6688,12 @@
 },
     {
         "id": 744,
-        "author": "Sunən ən-Nəsəi",
-        "book": "Azan kitabı ",
-        "chapter": "40-cı fəsil: Azan verildikdən sonra məsciddən çıxmağın şiddətli şəkildə qınanması ",
-        "number": 683,
-        "content": "Əşas ibn Əbu əş-Şəasə atasının  belə dediyini rəvayət edir: “Mən\nƏbu Hureyranın azan verildikdən sonra məsciddən çıxan bir kişinin\nqarşısını kəsdiyini gördüm. Əbu Hureyra dedi: “O ki qaldı bu kişiyə, o,\nartıq Əbul-Qasimə  asi olmuşdur”.",
-        "explanation": "",
-        "timestamp": "2026-06-26T20:02:36.264Z"
-    },
-    {
-        "id": 745,
-        "author": "Sunən ən-Nəsəi",
-        "book": "Azan kitabı ",
-        "chapter": "40-cı fəsil: Azan verildikdən sonra məsciddən çıxmağın şiddətli şəkildə qınanması ",
-        "number": 684,
-        "content": "Rəvayət edilir ki, Əbu əş-Şəasə  ؒ  demişdir: “Bir kişi namaz üçün\nazan verildikdən sonra məsciddən çıxdı. Əbu Hureyra dedi: “Bu, ƏbulQasimə  asi oldu”.",
-        "explanation": "",
-        "timestamp": "2026-06-26T20:02:36.264Z"
+        "d": "2026-06-27",
+        "kitab": "Sunən ən-Nəsəi",
+        "bolme": "Azan kitabı ",
+        "hedisNomresi": 683,
+        "az": "Əşas ibn Əbu əş-Şəasə atasının  belə dediyini rəvayət edir: “Mən\nƏbu Hureyranın azan verildikdən sonra məsciddən çıxan bir kişinin\nqarşısını kəsdiyini gördüm. Əbu Hureyra dedi: “O ki qaldı bu kişiyə, o,\nartıq Əbul-Qasimə  asi olmuşdur”.",
+        "izah": ""
     }
 
 
