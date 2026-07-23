@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hədis Tap - Professional Generator</title>
+    <style>
+        :root { --primary: #008080; --secondary: #475569; --bg: #f8fafc; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--primary); margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 700; margin-bottom: 5px; color: var(--secondary); font-size: 14px; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; outline: none; transition: 0.3s; }
+        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,128,128,0.1); }
+        .hadith-text {height: 250px;}
+        
+        /* Simvol Menyusu */
+        .symbol-menu { display: flex; flex-wrap: wrap; gap: 8px; background: #f1f5f9; padding: 12px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
+        .sym-btn { background: white; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: #334155; transition: 0.2s; }
+        .sym-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .sym-btn:active { transform: translateY(2px); }
+
+        .row { display: flex; gap: 15px; }
+        .btn-generate { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn-generate:hover { background: #006666; transform: scale(1.01); }
+        
+        .output-box { margin-top: 25px; background: #1e293b; color: #f1f5f9; padding: 20px; border-radius: 10px; position: relative; font-family: 'Courier New', Courier, monospace; font-size: 14px; min-height: 50px; }
+        .copy-btn { position: absolute; top: 10px; right: 10px; background: #475569; color: white; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        
+        .clear-cache { background: #fee2e2; color: #b91c1c; border: none; padding: 4px 8px; border-radius: 5px; cursor: pointer; font-size: 11px; float: right; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Hədis JSON Generator V2</h2>
+    
+    <div class="row">
+        <div class="form-group" style="flex: 0.3;">
+            <label>ID:</label>
+            <input type="number" id="id_input">
+        </div>
+        <div class="form-group" style="flex: 1;">
+            <label>Kitab Adı: <button class="clear-cache" onclick="localStorage.removeItem('kitab'); location.reload();">Yaddaşı Sil</button></label>
+            <input type="text" id="kitab_input" placeholder="Məsələn: ən-Nəsəinin “əs-Sunən” əsəri">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group" style="flex: 1;">
+            <label>Bölmə (Kitab Hissəsi): <button class="clear-cache" onclick="localStorage.removeItem('hisse'); location.reload();">Yaddaşı Sil</button></label>
+            <input type="text" id="bolme_hisse" placeholder="Məs: 1. Təmizlənmə kitabı">
+        </div>
+        <div class="form-group" style="flex: 1;">
+            <label>Fəsil Adı: <button class="clear-cache" onclick="localStorage.removeItem('fesil'); location.reload();">Yaddaşı Sil</button></label>
+            <input type="text" id="bolme_fesil" placeholder="Məs: 24-cü fəsil...">
+        </div>
+    </div>
+
+    <!-- Simvol Menyusu -->
+    <label>Simvol əlavə et (Mətndə istədiyiniz yerə klikləyin, sonra düyməni basın):</label>
+    <div class="symbol-menu">
+        <button class="sym-btn" onclick="insertSymbol('(azzə və cəllə)')">azzə və cəllə</button>
+        <button class="sym-btn" onclick="insertSymbol('(sallallahu aleyhi və səlləm)')">sallallahu aleyhi və səlləm</button>
+        <button class="sym-btn" onclick="insertSymbol('(radiyallahu anhu)')">radiyallahu anhu</button>
+        <button class="sym-btn" onclick="insertSymbol('(radiyallahu anhə)')">radiyallahu anhə</button>
+        <button class="sym-btn" onclick="insertSymbol('(radiyallahu anhumə)')">radiyallahu anhumə</button>
+        <button class="sym-btn" onclick="insertSymbol('(aleyhissəlam)')">aleyhissəlam</button>
+        <button class="sym-btn" onclick="insertSymbol('(rahiməhullah)')">rahiməhullah</button>
+    </div>
+
+    <div class="form-group">
+        <label>Hədis Mətni (№ ilə birlikdə):</label>
+        <textarea id="hadith_text" class="hadith-text" onfocus="lastFocused = this" placeholder="26. Huzeyfə rəvayət edir ki..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>İzah (Footnote):</label>
+        <textarea id="izah_input" onfocus="lastFocused = this" placeholder="Əgər varsa..."></textarea>
+    </div>
+
+    <button class="btn-generate" onclick="generateJSON()">JSON YARAT VƏ KOPYALA</button>
+
+    <div class="output-box">
+        <button class="copy-btn" onclick="copyToClipboard()">Kopyala</button>
+        <div id="json-output">// Hazır JSON kodu bura düşəcək...</div>
+    </div>
+</div>
+
+<script>
+    let lastFocused = document.getElementById('hadith_text');
+
+    // LocalStorage-dan məlumatları çək
+    window.onload = function() {
+        if(localStorage.getItem('kitab')) document.getElementById('kitab_input').value = localStorage.getItem('kitab');
+        if(localStorage.getItem('hisse')) document.getElementById('bolme_hisse').value = localStorage.getItem('hisse');
+        if(localStorage.getItem('fesil')) document.getElementById('bolme_fesil').value = localStorage.getItem('fesil');
+        if(localStorage.getItem('last_id')) document.getElementById('id_input').value = parseInt(localStorage.getItem('last_id')) + 1;
+    };
+
+    // Simvolu kursorun olduğu yerə yapışdır
+    function insertSymbol(symbol) {
+        const input = lastFocused;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const text = input.value;
+        input.value = text.substring(0, start) + symbol + text.substring(end);
+        input.focus();
+        input.selectionStart = input.selectionEnd = start + symbol.length;
+    }
+
+    // Mətni təmizləyən (enterləri silən) funksiya
+    function cleanText(text) {
+    if (!text) return "";
+    return text
+        .toString()
+        .replace(/\r?\n|\r/g, " ") // Enterləri silib yerinə BOŞLUQ qoyur (MÜHÜM!)
+        .replace(/\s+/g, " ")      // Artıq boşluqları təmizləyir
+        .replace(/"/g, '“')        // JSON-u qıran düz dırnaqları Azərbaycan dırnağına çevirir
+        .trim();
+}
+
+    function generateJSON() {
+    const id = document.getElementById('id_input').value;
+    const kitab = document.getElementById('kitab_input').value;
+    const hisse = document.getElementById('bolme_hisse').value;
+    const fesil = document.getElementById('bolme_fesil').value;
+    const rawHadith = document.getElementById('hadith_text').value.trim();
+    const izah = document.getElementById('izah_input').value;
+
+    let hedisNo = "";
+    let finalAz = rawHadith;
+
+    // Hədis nömrəsini və mətni ayırırıq
+    const match = rawHadith.match(/^(\d+)\.?\s*(.*)/s);
+    if (match) {
+        hedisNo = match[1];
+        finalAz = match[2];
+    }
+
+    // JSON Obyektini qururuq (Bütün açarlar və dəyərlər cüt dırnaqlı olur)
+    const result = {
+        "id": parseInt(id),
+        "d": new Date().toISOString().split('T')[0], // Tarixi avtomatik yazır
+        "kitab": cleanText(kitab),
+        "bolme": cleanText(`${hisse} - ${fesil}`),
+        "hedisNomresi": hedisNo.toString(),
+        "az": cleanText(finalAz),
+        "izah": cleanText(izah)
+    };
+
+    // MÜHÜM: JSON formatına çeviririk (null, 4 səliqəli düzülüş üçün)
+    // Sonda vergül qoymuruq ki, GitHub-da massivə əlavə edəndə rahat olsun
+    const jsonStr = JSON.stringify(result, null, 4);
+    document.getElementById('json-output').innerText = jsonStr;
+
+    // Yaddaşa veririk
+    localStorage.setItem('kitab', kitab);
+    localStorage.setItem('hisse', hisse);
+    localStorage.setItem('fesil', fesil);
+    localStorage.setItem('last_id', id);
+
+    // Təmizləmə (Kitab, Bölmə və Fəsil yaddaşda qalır, digərləri silinir)
+    document.getElementById('hadith_text').value = "";
+    document.getElementById('izah_input').value = "";
+    document.getElementById('id_input').value = parseInt(id) + 1;
+    
+    // Avtomatik kopyala
+    navigator.clipboard.writeText(jsonStr);
+}
+
+
+
+
+    
+</script>
+
+</body>
+</html>
