@@ -3,4 +3,4 @@
 //const jsonUrl = "https://cdn.jsdelivr.net/gh/rasimcoder/hedis-json@refs/heads/main/hedisApi.json?v=" + new Date().getTime();
 
 
-BURADAN BASLA: Ibn Mece - 3-cu fəsil: səh 12
+BURADAN BASLA: Ibn Mece - 4-cu fəsil: səh 15
